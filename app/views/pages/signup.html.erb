@@ -1,0 +1,20 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-8 offset-2">
+      <h2>Signup</h2>
+      <%= form_with url: signup_path, local: true, method: :post do |f| %>
+        <div class="mb-3">
+          <%= f.label :email, class:'form-label'%>
+          <%= f.text_field :email, type: "email", autofocus: "true", class:"form-control" %>
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+          <%= f.label :password, class:'form-label'%>
+          <%= f.text_field :password, type: "password", class:"form-control" %>
+        </div>
+        <%= f.submit "Signup", class:'btn btn-primary' %>
+      <% end %>
+      <%= link_to "Existing User? Login", root_path %>
+    </div>
+  </div>
+</div>
