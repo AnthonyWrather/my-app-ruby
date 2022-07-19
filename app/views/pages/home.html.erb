@@ -1,11 +1,55 @@
+<header>
+  <div class="collapse bg-dark" id="navbarHeader">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-md-7 py-4">
+          <h4 class="text-white">About</h4>
+          <p class="text-muted">This is just a dump of the shared data From the React/Node/Firebase hosted app and this Rails/Ruby/Cloud Run hosted app.</p>
+        </div>
+        <div class="col-sm-4 offset-md-1 py-4">
+          <h4 class="text-white">Contact</h4>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Follow on Twitter</a></li>
+            <li><a href="#" class="text-white">Like on Facebook</a></li>
+            <li><a href="#" class="text-white">Email me</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a href="/photoalbum" class="navbar-brand d-flex align-items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <strong>Go to your Photo's</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row mt-5">
+      <h1> All your data. </h1>
+      <p>
+        <table>
+          <td>
+            <h3 class="text-success">Email: <%= session[:data]["email"] %> </h3>
+          </td>
+          <td>
+            <h6 class="text-danger">UID: <%= session[:data]["localId"] %> </h6>
+          </td>
+          <td>
+            <%= button_to "Logout", logout_path, class:"btn btn-danger" %>
+          </td>
+        </table>
+      </p>
+      <hr>
+    </div>
+  </div>
+</header>
 <div class="container">
   <div class="row mt-5">
-    <h3><%= session[:data]["email"] %> </h3>
-    <%= button_to "Logout", logout_path, class:"btn btn-danger" %>
-  </div>
-</div>
-<div class="container">
-  <div class="row">
     <%= form_with url: "/create_todo", method: :post do |f| %>
       <div class="form-control">
         <%= f.text_field :title, placeholder:"Todo title...", style:"width: 100%" %>
@@ -15,14 +59,80 @@
       </div>
     <% end %>
   </div>
+  <br>
+  <br>
 </div>
 <div class="container">
-  <div class="row">
-    <% @todos.each do |todo| %>
-      <div class="col-8 offset-2">
-        <h3><%= todo.title %></h3>
-      </div>
-      <h6><%= todo.author unless todo.author.nil? %></h6>
-    <% end %>
+  <div class="row mt-5">
+    <table class="table" border="2px solid black">
+      <tr>
+        <th>
+          <h2>Todo's</h2>
+          <hr>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <% @todos.each do |todo| %>
+            <div class="col-8 offset-2">
+              <h3><%= todo.title %></h3>
+            </div>
+            <h6 class="text-success">Author: <%= todo.author unless todo.author.nil? %></h6>
+            <h6 class="text-danger">UID: <%= todo.userId unless todo.userId.nil? %></h6>
+            <h6 class="text-secondary">CreatedAt: <%= todo.createdAt unless todo.createdAt.nil? %></h6>
+            <hr>
+          <% end %>
+        </td>
+      </tr>
+    </table>
   </div>
+</div>
+<div class="container">
+  <table class="table" border="2px solid black">
+    <tr>
+      <th>
+        <h2>Files</h2>
+        <hr>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <% @myfiles.each do |myfile| %>
+          <div class="col-8 offset-2">
+            <h3><%= myfile.name %></h3>
+          </div>
+          <h6>URL: <a href="<%= myfile.url unless myfile.url.nil? %>" class="link-success"><%= myfile.url unless myfile.url.nil? %></a></h6>
+          <h6 class="text-primary">FolderId: <%= myfile.folderId unless myfile.folderId.nil? %></h6>
+          <h6 class="text-danger">UID: <%= myfile.userId unless myfile.userId.nil? %></h6>
+          <h6 class="text-secondary">CreatedAt: <%= myfile.createdAt unless myfile.createdAt.nil? %></h6>
+          <hr>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="container">
+  <table class="table" border="2px solid black">
+    <tr>
+      <th>
+        <h2>Folders</h2>
+        <hr>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <% @myfolders.each do |myfolder| %>
+          <div class="col-8 offset-2">
+            <h3><%= myfolder.name %></h3>
+          </div>
+          <h6 class="text-success">Path: <%= myfolder.path unless myfolder.path.nil? %></h6>
+          <h6 class="text-primary">ParentId: <%= myfolder.parentId unless myfolder.parentId.nil? %></h6>
+          <h6 class="text-danger">UID: <%= myfolder.userId unless myfolder.userId.nil? %></h6>
+          <h6 class="text-secondary">CreatedAt: <%= myfolder.createdAt unless myfolder.createdAt.nil? %></h6>
+          <hr>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+</div>
 </div>

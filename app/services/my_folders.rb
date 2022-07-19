@@ -1,5 +1,6 @@
 require 'google/cloud/firestore'
-class Todos
+
+class MyFolders
   attr_accessor :all
 
   @userId = ''
@@ -9,15 +10,17 @@ class Todos
                                               keyfile: Rails.application.credentials.google.keyfile
 
     @userId = current_user.nil? ? '' : current_user
-    get_todos
+    get_folders
   end
 
-  def get_todos
+  def get_folders
     self.all = []
 
-    todos_ref = @firestore.col('todos').where('userId', '=', @userId).order(:createdAt, 'desc')
-    todos_ref.get do |todo_ref|
-      all << Todo.new(todo_ref.data)
+    # folders_ref = @firestore.col('folders').where('userId', '=', @userId).order(:createdAt, 'desc')
+    folders_ref = @firestore.col('folders').where('userId', '=', @userId)
+    folders_ref.get do |folder_ref|
+      puts folder_ref
+      all << MyFolder.new(folder_ref.data)
     end
   end
 end
